@@ -67,6 +67,7 @@ public class LegionOpMode extends LinearOpMode {
         motorLeft.setDirection(DcMotor.Direction.FORWARD);
         motorRight.setDirection(DcMotor.Direction.REVERSE);
 
+        waitForStart();
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             if (gamepad1.right_bumper) {
@@ -77,6 +78,7 @@ public class LegionOpMode extends LinearOpMode {
 
             motorLeft.setPower(-gamepad1.left_stick_y * speedMultiplier);
             motorRight.setPower(-gamepad1.right_stick_y * speedMultiplier);
+            idle();
 
         }
     }
