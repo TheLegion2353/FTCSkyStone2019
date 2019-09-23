@@ -30,8 +30,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -55,31 +57,49 @@ public class LegionOpMode extends LinearOpMode {
     final float fastSpeed = 1.0f;
     final float slowSpeed = 0.5f;
     float speedMultiplier = 1.0f;
+    float servoPow = 0.0f;
+    float deltaTime = 0.0f;
+    float currentTime = 0.0f;
+    float pastTime = 0.0f;
     private DcMotor motorLeft;
     private DcMotor motorRight;
-
-
+    private DcMotor motorLift;
+    private CRServo servoGrab;
     @Override
     public void runOpMode() {
-        motorLeft = hardwareMap.dcMotor.get("motorLeft");
-        motorRight = hardwareMap.dcMotor.get("motorRight");
+        motorLeft = hardwareMap.dcMotor.get("motorLeft"); //left drive motor
+        motorRight = hardwareMap.dcMotor.get("motorRight"); //right drive motor
+        motorLift = hardwareMap.dcMotor.get("motorLift");
+        servoGrab = hardwareMap.crservo.get("servoGrab");
 
         motorLeft.setDirection(DcMotor.Direction.FORWARD);
         motorRight.setDirection(DcMotor.Direction.REVERSE);
-
+        motorLift.setDirection(DcMotor.Direction.FORWARD);
+        servoGrab.setDirection(CRServo.Direction.FORWARD);
         waitForStart();
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            if (gamepad1.right_bumper) {
+            if (gamepad1.right_bumper) { //slow speed code
                 speedMultiplier = slowSpeed;
             } else {
                 speedMultiplier = fastSpeed;
             }
 
+            if (gamepad1.a && gamepad1.b) {
+                servoPow = 0.0f;
+            } else if (gamepad1.a) {
+                servoPow = 1.0f;
+            } else if (gamepad1.b) {
+                servoPow = -1.0f;
+            } else {
+                servoPow = 0.0f;
+            }
+
             motorLeft.setPower(-gamepad1.left_stick_y * speedMultiplier);
             motorRight.setPower(-gamepad1.right_stick_y * speedMultiplier);
+            motorLift.setPower((gamepad1.right_trigger - gamepad1.left_trigger) * speedMultiplier);
+            servoGrab.setPower(servoPow * speedMultiplier);
             idle();
-
         }
     }
 }
