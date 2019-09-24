@@ -58,9 +58,6 @@ public class LegionOpMode extends LinearOpMode {
     final float slowSpeed = 0.5f;
     float speedMultiplier = 1.0f;
     float servoPow = 0.0f;
-    float deltaTime = 0.0f;
-    float currentTime = 0.0f;
-    float pastTime = 0.0f;
     private DcMotor motorLeft;
     private DcMotor motorRight;
     private DcMotor motorLift;
