@@ -56,6 +56,7 @@ import com.qualcomm.robotcore.util.Range;
 public class LegionOpMode extends LinearOpMode {
     final float fastSpeed = 1.0f;
     final float slowSpeed = 0.5f;
+    final float evenSlower = 0.5f; //Multiplier to make the lifter even slow
     float speedMultiplier = 1.0f;
     float servoPow = 0.0f;
     private DcMotor motorLeft;
@@ -74,6 +75,7 @@ public class LegionOpMode extends LinearOpMode {
         motorLift.setDirection(DcMotor.Direction.FORWARD);
         servoGrab.setDirection(CRServo.Direction.FORWARD);
         waitForStart();
+        motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             if (gamepad1.right_bumper) { //slow speed code
@@ -92,10 +94,15 @@ public class LegionOpMode extends LinearOpMode {
                 servoPow = 0.0f;
             }
 
+            //Motor movement
             motorLeft.setPower(-gamepad1.left_stick_y * speedMultiplier);
             motorRight.setPower(-gamepad1.right_stick_y * speedMultiplier);
             motorLift.setPower((gamepad1.right_trigger - gamepad1.left_trigger) * speedMultiplier);
-            servoGrab.setPower(servoPow * speedMultiplier);
+            servoGrab.setPower(servoPow * speedMultiplier * evenSlower);
+
+            //Telemetry
+            telemetry.addData("position", motorLift.getCurrentPosition());
+            telemetry.update();
             idle();
         }
     }
