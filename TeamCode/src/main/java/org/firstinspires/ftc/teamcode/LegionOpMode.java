@@ -75,7 +75,7 @@ public class LegionOpMode extends LinearOpMode {
         motorLift.setDirection(DcMotor.Direction.FORWARD);
         servoGrab.setDirection(CRServo.Direction.FORWARD);
         waitForStart();
-        motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             if (gamepad1.right_bumper) { //slow speed code
@@ -93,6 +93,11 @@ public class LegionOpMode extends LinearOpMode {
             } else {
                 servoPow = 0.0f;
             }
+
+            /*
+            add settargetposition stufff here for the motorLift
+            */
+
 
             //Motor movement
             motorLeft.setPower(-gamepad1.left_stick_y * speedMultiplier);
