@@ -20,6 +20,7 @@ public class LegionOpMode extends LinearOpMode {
     final float evenSlower = 0.5f; //Multiplier to make the lifter even slow
     float speedMultiplier = 1.0f;
     float servoPow = 0.0f;
+    float liftPos = 0.0f;
     private DcMotor motorLeft;
     private DcMotor motorRight;
     private DcMotor motorLift;
@@ -39,6 +40,7 @@ public class LegionOpMode extends LinearOpMode {
         motorLift.setTargetPosition(0);
         motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorLift.setPower(0.5);
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             if (gamepad1.right_bumper) { //slow speed code
@@ -57,15 +59,16 @@ public class LegionOpMode extends LinearOpMode {
                 servoPow = 0.0f;
             }
 
+            liftPos = liftPos + (gamepad1.right_trigger - gamepad1.left_trigger);
             //Motor movement
-            motorLift.setTargetPosition((int)(motorLift.getCurrentPosition() + ((gamepad1.right_trigger - gamepad1.left_trigger) * speedMultiplier * 30)));
-            motorLift.setPower(1);
+            motorLift.setTargetPosition((int)(liftPos));
             motorLeft.setPower(-gamepad1.left_stick_y * speedMultiplier);
             motorRight.setPower(-gamepad1.right_stick_y * speedMultiplier);
             servoGrab.setPower(servoPow * speedMultiplier * evenSlower);
 
             //Telemetry
             telemetry.addData("position", motorLift.getCurrentPosition());
+            telemetry.addData("targetPosition", liftPos);
             telemetry.update();
             idle();
         }
