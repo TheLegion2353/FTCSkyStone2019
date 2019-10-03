@@ -20,7 +20,8 @@ public class LegionOpMode extends LinearOpMode {
     final float evenSlower = 0.5f; //Multiplier to make the lifter even slow
     float speedMultiplier = 1.0f;
     float servoPow = 0.0f;
-    float liftPos = 0.0f;
+    float liftPow = 0.0f;
+    float noPow;
     private DcMotor motorLeft;
     private DcMotor motorRight;
     private DcMotor motorLift;
@@ -36,11 +37,13 @@ public class LegionOpMode extends LinearOpMode {
         motorRight.setDirection(DcMotor.Direction.REVERSE);
         motorLift.setDirection(DcMotor.Direction.FORWARD);
         servoGrab.setDirection(CRServo.Direction.FORWARD);
+
+        motorLift.setPower(0);
+        motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         waitForStart();
-        motorLift.setTargetPosition(0);
         motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorLift.setPower(0.5);
+        motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             if (gamepad1.right_bumper) { //slow speed code
@@ -58,17 +61,22 @@ public class LegionOpMode extends LinearOpMode {
             } else {
                 servoPow = 0.0f;
             }
-
-            liftPos = liftPos + (gamepad1.right_trigger - gamepad1.left_trigger);
+            liftPow = speedMultiplier * (gamepad1.right_trigger - gamepad1.left_trigger);
+            if (liftPow == 0) {
+                motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motorLift.setTargetPosition((int)noPow);
+            } else {
+                motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                noPow = motorLift.getCurrentPosition();
+            }
             //Motor movement
-            motorLift.setTargetPosition((int)(liftPos));
+            motorLift.setPower((liftPow));
             motorLeft.setPower(-gamepad1.left_stick_y * speedMultiplier);
             motorRight.setPower(-gamepad1.right_stick_y * speedMultiplier);
             servoGrab.setPower(servoPow * speedMultiplier * evenSlower);
-
             //Telemetry
-            telemetry.addData("position", motorLift.getCurrentPosition());
-            telemetry.addData("targetPosition", liftPos);
+            telemetry.addData("Position", motorLift.getCurrentPosition());
+            telemetry.addData("Lift Power", liftPow);
             telemetry.update();
             idle();
         }
