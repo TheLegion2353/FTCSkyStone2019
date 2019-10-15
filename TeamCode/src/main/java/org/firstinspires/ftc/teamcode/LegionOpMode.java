@@ -5,12 +5,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="Main TeleOp", group="TeleOp")
 
@@ -23,6 +20,7 @@ public class LegionOpMode extends LinearOpMode {
     float liftPow = 0.0f;
     float noPow;
     float servoPos = 0.0f;
+    float gamepadTriggerTotal;
     private DcMotor motorLeft;
     private DcMotor motorRight;
     private DcMotor motorLift;
@@ -56,6 +54,7 @@ public class LegionOpMode extends LinearOpMode {
         servoGrab2.setPosition(0.5f);
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            gamepadTriggerTotal = gamepad1.right_trigger - gamepad1.left_trigger;
             if (gamepad1.right_bumper) { //slow speed code
                 speedMultiplier = slowSpeed;
             } else {
@@ -80,7 +79,14 @@ public class LegionOpMode extends LinearOpMode {
                 servoPow = 0.0f;
             }
 
-            liftPow = speedMultiplier * (gamepad1.right_trigger - gamepad1.left_trigger);
+            if (gamepadTriggerTotal > 0 && motorLift.getCurrentPosition() <= 400) {
+                liftPow = speedMultiplier * (gamepadTriggerTotal);
+            } else if (gamepadTriggerTotal < 0 && motorLift.getCurrentPosition() >= -320) {
+                liftPow = speedMultiplier * (gamepadTriggerTotal);
+            } else {
+                liftPow = 0;
+            }
+
             if (liftPow == 0) {
                 motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 motorLift.setTargetPosition((int)noPow);
@@ -97,7 +103,9 @@ public class LegionOpMode extends LinearOpMode {
             servoGrab.setPosition(servoPos);
             servoGrab2.setPosition(servoPos);
             //Telemetry
-            telemetry.addData("Position", motorLift.getCurrentPosition());
+            telemetry.addData("Real Target Lift Position", motorLift.getTargetPosition());
+            telemetry.addData("Real Lift Position", motorLift.getCurrentPosition());
+            telemetry.addData("Target Lift Position", (int)noPow);
             telemetry.addData("Lift Power", liftPow);
             telemetry.addData("Grab Position", servoPos);
             telemetry.addData("Grab Power", servoPow);
