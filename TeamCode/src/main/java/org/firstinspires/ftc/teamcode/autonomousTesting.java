@@ -19,17 +19,42 @@ public class autonomousTesting extends LinearOpMode {
         motorRight = hardwareMap.dcMotor.get("motorRight");
         motorLift = hardwareMap.dcMotor.get("motorLift");
 
-        motorLeft.setDirection(DcMotor.Direction.FORWARD);
-        motorRight.setDirection(DcMotor.Direction.REVERSE);
+        motorLeft.setDirection(DcMotor.Direction.REVERSE);
+        motorRight.setDirection(DcMotor.Direction.FORWARD);
         motorLift.setDirection(DcMotor.Direction.FORWARD);
 
+        motorLeft.setTargetPosition(0);
+        motorRight.setTargetPosition(0);
+        motorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        motorLeft.setPower(1);
+        motorRight.setPower(1);
         waitForStart();
-        bothWheelsPower(.5f);
-        Thread.sleep(1000);
+        moveDistance(300);
+        telemetry.addData("Target Position", motorLeft.getTargetPosition());
+        telemetry.addData("Real Position", motorRight.getCurrentPosition());
+        telemetry.update();
     }
 
-    public void bothWheelsPower(float power) {
-        motorLeft.setPower(power);
-        motorRight.setPower(power);
+    public void bothWheels(int pos) {
+        motorLeft.setTargetPosition(pos);
+        motorRight.setTargetPosition(pos);
+    }
+
+    public boolean reachedTarget() {
+        if (motorRight.getCurrentPosition() == motorRight.getTargetPosition() && motorLeft.getCurrentPosition() == motorLeft.getTargetPosition()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void moveDistance(double dist) { //distance is in millimeters
+        dist = dist / 0.25244940977;
+        bothWheels((int)dist);
+        while (reachedTarget() == false) {
+            bothWheels((int)dist);
+        }
     }
 }
