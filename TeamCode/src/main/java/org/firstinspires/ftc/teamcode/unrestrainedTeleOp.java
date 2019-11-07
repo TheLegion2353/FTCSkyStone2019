@@ -9,9 +9,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name="Main TeleOp", group="TeleOp")
+@TeleOp(name="No Limits TeleOp", group="TeleOp")
 
-public class LegionOpMode extends LinearOpMode {
+public class unrestrainedTeleOp extends LinearOpMode {
     final float fastSpeed = 1.0f;
     final float slowSpeed = 0.5f;
     final float evenSlower = 0.25f; //Multiplier to make the lifter even slow
@@ -54,8 +54,6 @@ public class LegionOpMode extends LinearOpMode {
         motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         waitForStart();
-        servoGrab.setPosition(0.0f);
-        servoGrab2.setPosition(0.0f);
         motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -72,9 +70,9 @@ public class LegionOpMode extends LinearOpMode {
                 speedMultiplier = fastSpeed;
             }
 
-            if (gamepad1.dpad_up && motorExtend.getCurrentPosition() < 580) {
+            if (gamepad1.dpad_up) {
                 extendSpeed = 0.25f * speedMultiplier;
-            } else if (gamepad1.dpad_down && motorExtend.getCurrentPosition() > 20) {
+            } else if (gamepad1.dpad_down) {
                 extendSpeed = -0.25f * speedMultiplier;
             } else {
                 extendSpeed = 0.0f;
@@ -97,9 +95,9 @@ public class LegionOpMode extends LinearOpMode {
                 servoPow = 0.0f;
             }
 
-            if (gamepadTriggerTotal > 0 && motorLift.getCurrentPosition() <= 100) {
+            if (gamepadTriggerTotal > 0) {
                 liftPow = speedMultiplier * (gamepadTriggerTotal);
-            } else if (gamepadTriggerTotal < 0 && motorLift.getCurrentPosition() >= -500) {
+            } else if (gamepadTriggerTotal < 0) {
                 liftPow = speedMultiplier * (gamepadTriggerTotal);
             } else {
                 liftPow = 0;
@@ -125,6 +123,9 @@ public class LegionOpMode extends LinearOpMode {
             //Telemetry
             telemetry.addData("Slide Position", motorExtend.getCurrentPosition());
             telemetry.addData("Grab Position", servoGrab.getPosition());
+            telemetry.addData("Motor Left", motorLeft.getCurrentPosition());
+            telemetry.addData("Motor Right", motorRight.getCurrentPosition());
+            telemetry.addData("Motor Lift", motorLift.getCurrentPosition());
             telemetry.update();
             idle();
         }

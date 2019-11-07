@@ -28,6 +28,7 @@
  */
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import java.util.List;
@@ -52,6 +53,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * is explained below.
  */
 @Autonomous(name = "Autonomous First", group = "Concept")
+@Disabled
 public class autonomousFirst extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "Skystone.tflite";
     private static final String LABEL_FIRST_ELEMENT = "Stone";
