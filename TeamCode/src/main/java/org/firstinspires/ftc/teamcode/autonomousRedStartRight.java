@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name="Autonomous Test")
-public class autonomousTesting extends LinearOpMode {
+@Autonomous(name="Autonomous Right of Bridge")
+public class autonomousRedStartRight extends LinearOpMode {
     private DcMotor motorLeft;
     private DcMotor motorRight;
     private DcMotor motorLift;
@@ -44,8 +44,8 @@ public class autonomousTesting extends LinearOpMode {
         motorRight.setPower(0);
         motorLeft.setPower(0);
         Thread.sleep(100);
-        motorLeft.setPower(1);
-        motorRight.setPower(-1);
+        motorLeft.setPower(-1);
+        motorRight.setPower(1);
         Thread.sleep(1100);
         motorRight.setPower(0);
         motorLeft.setPower(0);
