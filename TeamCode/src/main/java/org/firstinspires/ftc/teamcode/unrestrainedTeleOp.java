@@ -37,16 +37,16 @@ public class unrestrainedTeleOp extends LinearOpMode {
         servoGrab = hardwareMap.servo.get("servoGrab");
         servoGrab2 = hardwareMap.servo.get("servoGrab2");
 
-        motorLeft.setDirection(DcMotor.Direction.REVERSE);
-        motorRight.setDirection(DcMotor.Direction.FORWARD);
+        motorLeft.setDirection(DcMotor.Direction.FORWARD);
+        motorRight.setDirection(DcMotor.Direction.REVERSE);
         motorLift.setDirection(DcMotor.Direction.FORWARD);
         motorExtend.setDirection(DcMotor.Direction.FORWARD);
         servoGrab.setDirection(Servo.Direction.FORWARD);
         servoGrab2.setDirection(Servo.Direction.REVERSE);
 
 
-        motorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorLift.setPower(0);
         motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorExtend.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -64,7 +64,7 @@ public class unrestrainedTeleOp extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             gamepadTriggerTotal =  gamepad1.left_trigger - gamepad1.right_trigger;
-            if (gamepad1.right_bumper) { //slow speed code
+            if (gamepad1.y) { //slow speed code
                 speedMultiplier = slowSpeed;
             } else {
                 speedMultiplier = fastSpeed;
@@ -77,15 +77,15 @@ public class unrestrainedTeleOp extends LinearOpMode {
             } else {
                 extendSpeed = 0.0f;
             }
-            if (gamepad1.a && gamepad1.b) {
+            if (gamepad1.right_bumper && gamepad1.left_bumper) {
                 servoPow = 0.0f;
-            } else if (gamepad1.a) {
+            } else if (gamepad1.right_bumper) {
                 if (servoPos <= 1.0f) {
                     servoPow = 0.01f * speedMultiplier;
                 } else {
                     servoPos = 1.0f;
                 }
-            } else if (gamepad1.b) {
+            } else if (gamepad1.left_bumper) {
                 if (servoPos >= 0.0f) {
                     servoPow = -0.01f * speedMultiplier;
                 } else {

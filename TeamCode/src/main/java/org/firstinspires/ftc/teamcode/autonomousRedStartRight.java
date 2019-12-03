@@ -19,8 +19,8 @@ public class autonomousRedStartRight extends LinearOpMode {
         motorRight = hardwareMap.dcMotor.get("motorRight");
         motorLift = hardwareMap.dcMotor.get("motorLift");
 
-        motorLeft.setDirection(DcMotor.Direction.REVERSE);
-        motorRight.setDirection(DcMotor.Direction.FORWARD);
+        motorLeft.setDirection(DcMotor.Direction.FORWARD);
+        motorRight.setDirection(DcMotor.Direction.REVERSE);
         motorLift.setDirection(DcMotor.Direction.FORWARD);
 
         motorLeft.setTargetPosition(0);

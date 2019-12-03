@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name="Autonomous Left of Bridge")
-public class autonomousRedStartLeft extends LinearOpMode {
+@Autonomous(name="Autonomous Right of Bridge Brick")
+public class AutonomousBrick extends LinearOpMode {
     private DcMotor motorLeft;
     private DcMotor motorRight;
     private DcMotor motorLift;
@@ -23,48 +23,24 @@ public class autonomousRedStartLeft extends LinearOpMode {
         motorRight.setDirection(DcMotor.Direction.REVERSE);
         motorLift.setDirection(DcMotor.Direction.FORWARD);
 
-        motorLeft.setTargetPosition(0);
-        motorRight.setTargetPosition(0);
         motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        /*
-        motorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        */
 
-        motorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //motorLeft.setPower(1);
-        //motorRight.setPower(1);
+        motorLeft.setTargetPosition(0);
+        motorRight.setTargetPosition(0);
+
+        motorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorLeft.setPower(0.5);
+        motorRight.setPower(0.5);
 
         waitForStart();
-        motorLeft.setPower(1);
-        motorRight.setPower(1);
-        Thread.sleep(900);
-        motorRight.setPower(0);
-        motorLeft.setPower(0);
-        Thread.sleep(100);
-        motorLeft.setPower(1);
-        motorRight.setPower(-1);
-        Thread.sleep(1100);
-        motorRight.setPower(0);
-        motorLeft.setPower(0);
-        Thread.sleep(100);
-        motorRight.setPower(1);
-        motorLeft.setPower(1);
-        Thread.sleep(500);
-        motorRight.setPower(0);
-        motorLeft.setPower(0);
-        /*
         motorLeft.setTargetPosition(0);
         motorRight.setTargetPosition(0);
 
         telemetry.addData("Right Encoder Value: ", motorRight.getCurrentPosition());
         telemetry.addData("Left Encoder Value: ", motorLeft.getCurrentPosition());
-        moveBothDistance(1);
-        telemetry.addLine("Done Moving Up");
-        telemetry.update();
-        moveBothDistance(-100);
+        moveBothDistance(100);
         telemetry.addLine("Finsihed moving");
         telemetry.update();
         turnAngle(90);
@@ -73,7 +49,7 @@ public class autonomousRedStartLeft extends LinearOpMode {
         telemetry.addData("Target Position", motorLeft.getTargetPosition());
         telemetry.addData("Real Position", motorRight.getCurrentPosition());
         telemetry.update();
-        Thread.sleep(1);*/
+        Thread.sleep(1);
     }
 
 
