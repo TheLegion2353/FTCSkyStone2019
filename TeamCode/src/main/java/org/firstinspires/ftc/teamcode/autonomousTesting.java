@@ -78,7 +78,7 @@ public class autonomousTesting extends LinearOpMode {
         motorLeft.setTargetPosition(0);
         motorRight.setTargetPosition(0);
 
-        lift(-500);
+        lift(-400);
         grab(0.75f);
         extend(580);
         lift(100);
@@ -86,19 +86,45 @@ public class autonomousTesting extends LinearOpMode {
         grab(1);
         lift(0);
         moveDistance(-75);
-        circle(15);
-        moveDistance(200);
+        circle(33);
+        moveDistance(230);
+        circle(-33);
+        lift(-100);
+        moveDistance(50);
+        grab(0.75f);
+        lift(100);
+        moveDistance(-110);
+
         Thread.sleep(10000);
     }
 
 
     public void circle(double dist) throws InterruptedException{ //If +, then turns right.  If -, then turns left.  152 is a full rotation.  38 is a quarter. 76 is a half.
+        motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        motorLeft.setTargetPosition(0);
+        motorRight.setTargetPosition(0);
+        motorLift.setTargetPosition(0);
+        motorExtend.setTargetPosition(0);
+
+        motorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         dist = dist / 27.65;
+        motorLeft.setPower(0.20);
+        motorRight.setPower(0.20);
         rotateLeft(dist);
         rotateRight(-dist);
         while (reached(motorLeft) == false || reached(motorRight) == false) {
 
         }
+        motorLeft.setPower(.35);
+        motorRight.setPower(.35);
         Thread.sleep(1500);
     }
 
@@ -166,78 +192,4 @@ public class autonomousTesting extends LinearOpMode {
             return false;
         }
     }
-
-    /*
-    public void bothWheels(int pos) {
-        motorLeft.setTargetPosition(pos + motorLeft.getCurrentPosition());
-        motorRight.setTargetPosition(pos + motorRight.getCurrentPosition());
-    }
-
-    public boolean reachedTarget(boolean backward) {
-        if (backward == false) {
-            if (motorRight.getCurrentPosition() - motorRight.getTargetPosition() <= 3 && motorLeft.getCurrentPosition() - motorLeft.getTargetPosition() <= 3) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            if (-motorRight.getCurrentPosition() + motorRight.getTargetPosition() <= 3 && -motorLeft.getCurrentPosition() + motorLeft.getTargetPosition() <= 3) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
-
-
-    public void turnAngle(double angle) {// Angle is in degrees; Turns the robot with the left wheel staying still and the right wheel moving
-        angle = angle * ((37*Math.PI)/360);
-        moveRightDistance((int)angle + motorRight.getCurrentPosition());
-        moveLeftDistance(motorLeft.getCurrentPosition() - (int)angle);
-    }
-
-    public void turnAnglePivRight(double angle) {// Angle is in degrees; Turns the robot with the right wheel staying still and the left wheel moving
-        angle = angle * ((37*Math.PI)/360);
-        moveRightDistance((int)angle + motorLeft.getCurrentPosition());
-    }
-
-
-    public void moveBothDistance(double dist) { //distance is in millimeters
-        dist = dist / 0.25244940977;
-        bothWheels((int)dist);
-        if (dist > 0) {
-            while (reachedTarget(false) == false) {
-            }
-        } else {
-            while (reachedTarget(true) == false) {
-            }
-        }
-    }
-
-    public void moveRightDistance(double dist) {
-        dist = dist / 0.25244940977;
-        motorRight.setTargetPosition((int)dist);
-        bothWheels((int) dist);
-        if (dist > 0) {
-            while (reachedTarget(false) == false) {
-            }
-        } else {
-            while (reachedTarget(true) == false) {
-            }
-        }
-    }
-
-    public void moveLeftDistance(double dist) {
-        dist = dist / 0.25244940977;
-        motorLeft.setTargetPosition((int)dist);
-        bothWheels((int) dist);
-        if (dist > 0) {
-            while (reachedTarget(false) == false) {
-            }
-        } else {
-            while (reachedTarget(true) == false) {
-            }
-        }
-    }
-     */
 }
