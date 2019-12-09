@@ -50,8 +50,8 @@ public class autonomousTesting extends LinearOpMode {
         motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorExtend.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        motorLeft.setPower(0.35);
-        motorRight.setPower(0.35);
+        motorLeft.setPower(0.45);
+        motorRight.setPower(0.45);
         motorLift.setPower(.5);
         motorExtend.setPower(1);
 
@@ -85,17 +85,16 @@ public class autonomousTesting extends LinearOpMode {
         moveDistance(100);
         grab(1);
         lift(0);
-        moveDistance(-75);
+        moveDistance(-50);
         circle(33);
         moveDistance(230);
+        Thread.sleep(300);
         circle(-33);
         lift(-100);
-        moveDistance(50);
+        moveDistance(60);
         grab(0.75f);
         lift(100);
-        moveDistance(-110);
-
-        Thread.sleep(10000);
+        moveDistance(-125);
     }
 
 
@@ -123,9 +122,9 @@ public class autonomousTesting extends LinearOpMode {
         while (reached(motorLeft) == false || reached(motorRight) == false) {
 
         }
-        motorLeft.setPower(.35);
-        motorRight.setPower(.35);
-        Thread.sleep(1500);
+        motorLeft.setPower(.45);
+        motorRight.setPower(.45);
+        Thread.sleep(500);
     }
 
 
