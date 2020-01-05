@@ -22,6 +22,8 @@ public class unrestrainTeleOpOut extends LinearOpMode {
     float servoPos = 0.75f;
     float gamepadTriggerTotal;
     float extendSpeed;
+    float leftPlus = 0.0f;
+    float rightPlus = 0.0f;
     private DcMotor motorLeft;
     private DcMotor motorRight;
     private DcMotor motorLift;
@@ -111,6 +113,16 @@ public class unrestrainTeleOpOut extends LinearOpMode {
                 noPow = motorLift.getCurrentPosition();
             }
 
+            if (gamepad1.dpad_left == true) {
+                leftPlus += 0.01f;
+                rightPlus -= 0.01f;
+            }
+
+            if (gamepad1.dpad_right == true) {
+                leftPlus -= 0.01f;
+                rightPlus += 0.01f;
+            }
+
 
             servoPos = servoPos + servoPow;
             //Motor movement
@@ -118,8 +130,8 @@ public class unrestrainTeleOpOut extends LinearOpMode {
             motorLeft.setPower(-gamepad1.left_stick_y * speedMultiplier);
             motorRight.setPower(-gamepad1.right_stick_y * speedMultiplier);
             motorExtend.setPower(extendSpeed);
-            servoGrab.setPosition(servoPos);
-            servoGrab2.setPosition(servoPos);
+            servoGrab.setPosition(servoPos + leftPlus);
+            servoGrab2.setPosition(servoPos + rightPlus);
             //Telemetry
             telemetry.addData("Slide Position", motorExtend.getCurrentPosition());
             telemetry.addData("Grab Position", servoGrab.getPosition());
