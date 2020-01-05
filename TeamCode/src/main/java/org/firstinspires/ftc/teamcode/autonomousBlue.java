@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name="Autonomous Red")
-public class autonomousTesting extends LinearOpMode {
+@Autonomous(name="Autonomous Blue")
+public class autonomousBlue extends LinearOpMode {
     private DcMotor motorLeft;
     private DcMotor motorRight;
     private DcMotor motorLift;
@@ -50,9 +50,9 @@ public class autonomousTesting extends LinearOpMode {
         motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorExtend.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        motorLeft.setPower(0.45);
-        motorRight.setPower(0.45);
-        motorLift.setPower(.5);
+        motorLeft.setPower(0.6);
+        motorRight.setPower(0.6);
+        motorLift.setPower(.75);
         motorExtend.setPower(1);
 
         /*Notes
@@ -86,13 +86,13 @@ public class autonomousTesting extends LinearOpMode {
         grab(1);
         lift(0);
         moveDistance(-60);
-        circle(35);
+        circle(-35);
         motorLeft.setPower(0.85);
         motorRight.setPower(0.85);
         moveDistance(221.5);
         Thread.sleep(300);
         lift(-100);
-        circle(-35);
+        circle(35);
         moveDistance(48);
         grab(0.75f);
         lift(150);
@@ -132,8 +132,8 @@ public class autonomousTesting extends LinearOpMode {
         while (reached(motorLeft) == false || reached(motorRight) == false) {
 
         }
-        motorLeft.setPower(.45);
-        motorRight.setPower(.45);
+        motorLeft.setPower(.5);
+        motorRight.setPower(.5);
         Thread.sleep(500);
     }
 

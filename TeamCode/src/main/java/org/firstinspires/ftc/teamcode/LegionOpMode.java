@@ -19,7 +19,7 @@ public class LegionOpMode extends LinearOpMode {
     float servoPow = 0.0f;
     float liftPow = 0.0f;
     float noPow;
-    float servoPos = 0.0f;
+    float servoPos = 0.75f;
     float gamepadTriggerTotal;
     float extendSpeed;
     private DcMotor motorLeft;
@@ -72,9 +72,9 @@ public class LegionOpMode extends LinearOpMode {
                 speedMultiplier = fastSpeed;
             }
 
-            if (gamepad1.dpad_up && motorExtend.getCurrentPosition() < 580) {
+            if (gamepad1.dpad_up && motorExtend.getCurrentPosition() < 0) {
                 extendSpeed = 0.25f * speedMultiplier;
-            } else if (gamepad1.dpad_down && motorExtend.getCurrentPosition() > 20) {
+            } else if (gamepad1.dpad_down && motorExtend.getCurrentPosition() > -580) {
                 extendSpeed = -0.25f * speedMultiplier;
             } else {
                 extendSpeed = 0.0f;
@@ -97,9 +97,9 @@ public class LegionOpMode extends LinearOpMode {
                 servoPow = 0.0f;
             }
 
-            if (gamepadTriggerTotal > 0 && motorLift.getCurrentPosition() <= 100) {
+            if (gamepadTriggerTotal > 0 && motorLift.getCurrentPosition() <= 650) {
                 liftPow = speedMultiplier * (gamepadTriggerTotal);
-            } else if (gamepadTriggerTotal < 0 && motorLift.getCurrentPosition() >= -500) {
+            } else if (gamepadTriggerTotal < 0 && motorLift.getCurrentPosition() >= 0) {
                 liftPow = speedMultiplier * (gamepadTriggerTotal);
             } else {
                 liftPow = 0;
@@ -123,8 +123,8 @@ public class LegionOpMode extends LinearOpMode {
             servoGrab.setPosition(servoPos);
             servoGrab2.setPosition(servoPos);
             //Telemetry
-            telemetry.addData("Slide Position", motorExtend.getCurrentPosition());
-            telemetry.addData("Grab Position", servoGrab.getPosition());
+            //telemetry.addData("Right Position", motorExtend.getCurrentPosition());
+            telemetry.addData("Lift Position", motorLift.getCurrentPosition());
             telemetry.update();
             idle();
         }

@@ -9,9 +9,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name="No Limits TeleOp In", group="TeleOp")
+@TeleOp(name="No Limits TeleOp Out", group="TeleOp")
 
-public class unrestrainedTeleOp extends LinearOpMode {
+public class unrestrainTeleOpOut extends LinearOpMode {
     final float fastSpeed = 1.0f;
     final float slowSpeed = 0.5f;
     final float evenSlower = 0.25f; //Multiplier to make the lifter even slow
@@ -19,7 +19,7 @@ public class unrestrainedTeleOp extends LinearOpMode {
     float servoPow = 0.0f;
     float liftPow = 0.0f;
     float noPow;
-    float servoPos = 0f;
+    float servoPos = 0.75f;
     float gamepadTriggerTotal;
     float extendSpeed;
     private DcMotor motorLeft;
@@ -59,8 +59,8 @@ public class unrestrainedTeleOp extends LinearOpMode {
         motorExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorExtend.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        servoGrab.setPosition(0);
-        servoGrab2.setPosition(0);
+        servoGrab.setPosition(0.75);
+        servoGrab2.setPosition(0.75);
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             gamepadTriggerTotal =  gamepad1.left_trigger - gamepad1.right_trigger;

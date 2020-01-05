@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name="Autonomous Red")
-public class autonomousTesting extends LinearOpMode {
+@Autonomous(name="Deploy Arm Park Right")
+public class autonomousDeploy extends LinearOpMode {
     private DcMotor motorLeft;
     private DcMotor motorRight;
     private DcMotor motorLift;
@@ -81,30 +81,11 @@ public class autonomousTesting extends LinearOpMode {
         lift(-400);
         grab(0.75f);
         extend(580);
-        lift(100);
-        moveDistance(120);
-        grab(1);
         lift(0);
-        moveDistance(-60);
-        circle(35);
-        motorLeft.setPower(0.85);
-        motorRight.setPower(0.85);
-        moveDistance(221.5);
-        Thread.sleep(300);
-        lift(-100);
+
+        moveDistance(60);
         circle(-35);
-        moveDistance(48);
-        grab(0.75f);
-        lift(150);
-        sleep(200);
-        motorRight.setPower(0.25);
-        motorLeft.setPower(0.25);
-        moveDistance(-10);
-        motorRight.setPower(1);
-        motorLeft.setPower(1);
-        moveDistance(-150);
-        motorLift.setPower(1);
-        lift(-550);
+        moveDistance(30);
     }
 
 
