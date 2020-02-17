@@ -14,7 +14,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class unrestrainedTeleOp extends LinearOpMode {
     final float fastSpeed = 1.0f;
     final float slowSpeed = 0.5f;
-    final float evenSlower = 0.25f; //Multiplier to make the lifter even slow
+    final float evenSlower = 0.25f; //Multiplier to make the lifter even
+    final float gripFactor = 0.0f;
     float speedMultiplier = 1.0f;
     float servoPow = 0.0f;
     float liftPow = 0.0f;
@@ -22,14 +23,14 @@ public class unrestrainedTeleOp extends LinearOpMode {
     float servoPos = 0.0f;
     float gamepadTriggerTotal;
     float extendSpeed;
-    float rightPlus = 0.0f;
-    float leftPlus = 0.0f;
     private DcMotor motorLeft;
     private DcMotor motorRight;
     private DcMotor motorLift;
     private DcMotor motorExtend;
     private Servo servoGrab;
     private Servo servoGrab2;
+    private Servo servoDrag;
+
     @Override
     public void runOpMode() {
         motorLeft = hardwareMap.dcMotor.get("motorLeft"); //left drive motor
@@ -38,6 +39,7 @@ public class unrestrainedTeleOp extends LinearOpMode {
         motorExtend = hardwareMap.dcMotor.get("motorExtend");
         servoGrab = hardwareMap.servo.get("servoGrab");
         servoGrab2 = hardwareMap.servo.get("servoGrab2");
+        servoDrag = hardwareMap.servo.get("servoDrag");
 
         motorLeft.setDirection(DcMotor.Direction.FORWARD);
         motorRight.setDirection(DcMotor.Direction.REVERSE);
@@ -46,6 +48,7 @@ public class unrestrainedTeleOp extends LinearOpMode {
         servoGrab.setDirection(Servo.Direction.FORWARD);
         servoGrab2.setDirection(Servo.Direction.REVERSE);
 
+        servoDrag.setPosition(1);
 
         motorLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -63,8 +66,15 @@ public class unrestrainedTeleOp extends LinearOpMode {
 
         servoGrab.setPosition(0);
         servoGrab2.setPosition(0);
+        servoDrag.setPosition(1);
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+
+            if (gamepad1.b) {
+                servoDrag.setPosition(.31);
+            } else {
+                servoDrag.setPosition(1);
+            }
             gamepadTriggerTotal =  gamepad1.left_trigger - gamepad1.right_trigger;
             if (gamepad1.y) { //slow speed code
                 speedMultiplier = slowSpeed;
@@ -113,15 +123,6 @@ public class unrestrainedTeleOp extends LinearOpMode {
                 noPow = motorLift.getCurrentPosition();
             }
 
-            if (gamepad1.dpad_left == true) {
-                leftPlus += 0.01f;
-                rightPlus -= 0.01f;
-            }
-
-            if (gamepad1.dpad_right == true) {
-                leftPlus -= 0.01f;
-                rightPlus += 0.01f;
-            }
 
             servoPos = servoPos + servoPow;
             //Motor movement
@@ -129,8 +130,8 @@ public class unrestrainedTeleOp extends LinearOpMode {
             motorLeft.setPower(-gamepad1.left_stick_y * speedMultiplier);
             motorRight.setPower(-gamepad1.right_stick_y * speedMultiplier);
             motorExtend.setPower(extendSpeed);
-            servoGrab.setPosition(servoPos + rightPlus);
-            servoGrab2.setPosition(servoPos + leftPlus);
+            servoGrab.setPosition(servoPos + gripFactor);
+            servoGrab2.setPosition(servoPos - gripFactor);
             //Telemetry
             telemetry.addData("Slide Position", motorExtend.getCurrentPosition());
             telemetry.addData("Grab Position", servoGrab.getPosition());

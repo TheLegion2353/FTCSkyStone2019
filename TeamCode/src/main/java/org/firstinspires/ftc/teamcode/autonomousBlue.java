@@ -14,6 +14,8 @@ public class autonomousBlue extends LinearOpMode {
     private DcMotor motorExtend;
     private Servo servoGrab;
     private Servo servoGrab2;
+    private Servo servoDrag;
+    final float gripFacotr = 0.0f;
     private static final int ONEROTATIONCOUNTS = 455;
 
     @Override
@@ -24,7 +26,7 @@ public class autonomousBlue extends LinearOpMode {
         motorExtend = hardwareMap.dcMotor.get("motorExtend");
         servoGrab = hardwareMap.servo.get("servoGrab");
         servoGrab2 = hardwareMap.servo.get("servoGrab2");
-
+        servoDrag = hardwareMap.servo.get("servoDrag");
 
         motorLeft.setDirection(DcMotor.Direction.FORWARD);
         motorRight.setDirection(DcMotor.Direction.REVERSE);
@@ -38,6 +40,7 @@ public class autonomousBlue extends LinearOpMode {
         motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        servoDrag.setPosition(1);
         motorLeft.setTargetPosition(0);
         motorRight.setTargetPosition(0);
         motorLift.setTargetPosition(0);
@@ -60,6 +63,7 @@ public class autonomousBlue extends LinearOpMode {
         Circumfirance: 27.65cm
          */
         waitForStart();
+        servoDrag.setPosition(1);
         motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -78,33 +82,36 @@ public class autonomousBlue extends LinearOpMode {
         motorLeft.setTargetPosition(0);
         motorRight.setTargetPosition(0);
 
-        lift(-400);
-        grab(0.75f);
+        lift(-300);
+        grab(0.7f);
         extend(580);
-        lift(100);
+        lift(150);
         moveDistance(120);
         grab(1);
         lift(0);
         moveDistance(-60);
         circle(-35);
+
         motorLeft.setPower(0.85);
         motorRight.setPower(0.85);
         moveDistance(221.5);
-        Thread.sleep(300);
+        Thread.sleep(100);
+
         lift(-100);
         circle(35);
-        moveDistance(48);
+        motorLeft.setPower(0.5);
+        motorRight.setPower(0.5);
+        moveDistance(70);
+        lift(0);
         grab(0.75f);
-        lift(150);
-        sleep(200);
-        motorRight.setPower(0.25);
-        motorLeft.setPower(0.25);
-        moveDistance(-10);
-        motorRight.setPower(1);
-        motorLeft.setPower(1);
-        moveDistance(-150);
-        motorLift.setPower(1);
-        lift(-550);
+        motorLeft.setPower(0.5);
+        motorRight.setPower(0.5);
+        moveDistance(-70);
+        circle(35);
+        motorLeft.setPower(.75);
+        motorRight.setPower(.75);
+        moveDistance(150);
+
     }
 
 
@@ -151,8 +158,8 @@ public class autonomousBlue extends LinearOpMode {
     }
 
     public void grab(float pos) {
-        servoGrab.setPosition(pos);
-        servoGrab2.setPosition(pos);
+        servoGrab.setPosition(pos + gripFacotr);
+        servoGrab2.setPosition(pos - gripFacotr);
     }
 
     public void lift(int pos) throws InterruptedException {
